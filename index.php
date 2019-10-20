@@ -56,16 +56,32 @@
                                 Комментарий успешно добавлен
                               </div>
 
-                                <div class="media">
-                                  <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
-                                  <div class="media-body">
-                                    <h5 class="mt-0">John Doe</h5>
-                                    <span><small>12/10/2025</small></span>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe aspernatur, ullam doloremque deleniti, sequi obcaecati.
-                                    </p>
-                                  </div>
-                                </div>
+                                <?php
+                                    $comments = [
+                                    ["name" => "John", "date" => "12/10/2019" ,"text" => "Привет"],
+                                    ["name" => "Leron", "date" => "13/10/2019" ,"text" => "Здравствуй"],
+                                    ["name" => "Egor", "date" => "13/10/2019" ,"text" => "МММ"]
+                                    ];
+                                    foreach ($comments as $comment):
+
+
+                                    ?>
+
+                                  <div class="media">
+                                            <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
+                                              <div class="media-body">
+                                                <h5 class="mt-0"><?php echo $comment["name"]; ?></h5>
+                                                <span><small><?php echo $comment["date"]; ?></small></span>
+                                                <p>
+                                                   <?php echo $comment["text"];?>
+                                                </p>
+
+                                              </div>
+                                          </div>
+
+                                      <?php endforeach; ?>
+
+
                             </div>
                         </div>
                     </div>
