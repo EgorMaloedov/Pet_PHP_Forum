@@ -17,7 +17,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     Проект
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,10 +34,10 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link" href="login.html">Войти</a>
+                                <a class="nav-link" href="login.php">Войти</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="register.html">Зарегестрироваться</a>
+                                <a class="nav-link" href="register.php">Зарегестрироваться</a>
                             </li>
                     </ul>
                 </div>
@@ -60,7 +60,8 @@
                                     $comments = [
                                     ["name" => "John", "date" => "12/10/2019" ,"text" => "Привет"],
                                     ["name" => "Leron", "date" => "13/10/2019" ,"text" => "Здравствуй"],
-                                    ["name" => "Egor", "date" => "13/10/2019" ,"text" => "МММ"]
+                                    ["name" => "Egor", "date" => "13/10/2019" ,"text" => "МММ"],
+                                    ["name" => "Юля", "date" => "13/10/2019" ,"text" => "Привет"]
                                     ];
                                     foreach ($comments as $comment):
 
@@ -91,13 +92,13 @@
                             <div class="card-header"><h3>Оставить комментарий</h3></div>
 
                             <div class="card-body">
-                                <form action="/store" method="post">
+                                <form action="handler.php" method="post">
                                     <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Имя</label>
+                                    <label for="exampleFormControlTextarea1" name = "name">Имя</label>
                                     <input name="name" class="form-control" id="exampleFormControlTextarea1" />
                                   </div>
                                   <div class="form-group">
-                                    <label for="exampleFormControlTextarea1">Сообщение</label>
+                                    <label for="exampleFormControlTextarea1" name = "text">Сообщение</label>
                                     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                   </div>
                                   <button type="submit" class="btn btn-success">Отправить</button>

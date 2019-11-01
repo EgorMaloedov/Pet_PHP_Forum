@@ -1,3 +1,4 @@
+<?php require "obrab.php" ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -17,7 +18,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     Проект
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,10 +35,10 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link" href="login.html">Войти</a>
+                                <a class="nav-link" href="login.php">Войти</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="register.html">Зарегестрироваться</a>
+                                <a class="nav-link" href="register.php">Зарегестрироваться</a>
                             </li>
                     </ul>
                 </div>
@@ -52,7 +53,7 @@
                             <div class="card-header">Регистрация</div>
 
                             <div class="card-body">
-                                <form method="POST" action="">
+                                <form method="POST" action="obrab.php">
 
                                     <div class="form-group row">
                                         <label for="name" class="col-md-4 col-form-label text-md-right">Логин</label>
