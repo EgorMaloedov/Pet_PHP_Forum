@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once("db.php");
+ ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -52,21 +56,21 @@
                             <div class="card-header"><h3>Комментарии</h3></div>
 
                             <div class="card-body">
-                              <div class="alert alert-success" role="alert">
-                                Комментарий успешно добавлен
-                              </div>
+                              <?php if ($_SESSION["err_name"] == 0 && $_SESSION["err_text"] == 0 && $_SESSION["handler"]==0) {
+                                echo '
+                                <div class="alert alert-success" role="alert">
+                                  Комментарий успешно добавлен
+                                </div>';
+                              } ?>
+
 
                                 <?php
-                                    $comments = [
-                                    ["name" => "John", "date" => "12/10/2019" ,"text" => "Привет"],
-                                    ["name" => "Leron", "date" => "13/10/2019" ,"text" => "Здравствуй"],
-                                    ["name" => "Egor", "date" => "13/10/2019" ,"text" => "МММ"],
-                                    ["name" => "Юля", "date" => "13/10/2019" ,"text" => "Привет"]
-                                    ];
+                                $sql  = "SELECT * FROM comments";
+                                $stmt = $pdo -> query($sql);
+                              $comments = array_reverse($stmt -> fetchAll(PDO::FETCH_ASSOC));
+
                                     foreach ($comments as $comment):
-
-
-                                    ?>
+                                      ?>
 
                                   <div class="media">
                                             <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
@@ -95,12 +99,51 @@
                                 <form action="handler.php" method="post">
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "name">Имя</label>
-                                    <input name="name" class="form-control" id="exampleFormControlTextarea1" />
+                                    <input name="name" class="form-control <?php if ($_SESSION["err_name"]!=0 && $_SESSION["handler"] == 0): echo "is-invalid";?>" id="exampleFormControlTextarea1" />
+                                      <?php
+                                      switch ($_SESSION["err_name"]) {
+                                          case 1:
+                                          $txt = "Пожалуй, это имя слишком короткое...";
+                                          break;
+                                          case 2:
+                                          $txt = "Оно слишком длинное(32)";
+                                          break;
+                                        }
+                                      echo
+                                      ' <span class="invalid-feedback" role="alert">
+                                            <strong>'.$txt.'
+                                                </strong>
+                                        </span>';
+
+                                      endif;
+                                       ?>
                                   </div>
+
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "text">Сообщение</label>
-                                    <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                  </div>
+                                    <textarea name="text" class="form-control <?php if ($_SESSION["err_text"]!=0 && $_SESSION["handler"] == 0) echo "is-invalid";?>" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+
+                                    <?php
+                                    if ($_SESSION["err_text"]!=0 && $_SESSION["handler"] == 0){
+                                    switch ($_SESSION["err_text"]) {
+                                        case 1:
+                                        $txt = "Неужели, вы не хотите ничего написать...";
+                                        break;
+                                        case 2:
+                                        $txt = "Увы... но количество символов ограничено(255)";
+                                        break;
+                                      }
+                                    echo
+                                    ' <span class="invalid-feedback" role="alert">
+                                          <strong>'.$txt.'
+                                              </strong>
+                                      </span>';
+
+                                    }
+                                     ?>
+
+                                    </div>
                                   <button type="submit" class="btn btn-success">Отправить</button>
                                 </form>
                             </div>
@@ -112,3 +155,4 @@
     </div>
 </body>
 </html>
+<?php $_SESSION["handler"]=1; ?>
