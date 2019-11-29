@@ -1,4 +1,5 @@
-<?php require "obrab.php" ?>
+<?php session_start();
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -53,17 +54,33 @@
                             <div class="card-header">Регистрация</div>
 
                             <div class="card-body">
-                                <form method="POST" action="obrab.php">
+                                <form method="POST" action="handler_reg.php">
 
                                     <div class="form-group row">
                                         <label for="name" class="col-md-4 col-form-label text-md-right">Логин</label>
 
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="" autofocus>
+                                            <input id="name" type="text" class="form-control <?php if ($_SESSION["name_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?>" name="nm" autofocus>
 
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>Ошибка валидации</strong>
-                                                </span>
+                                            <?php
+                                            if ($_SESSION["name_err"] != 0 && $_SESSION["handler_reg"] == 0){
+                                            switch ($_SESSION["name_err"]) {
+                                              case 1:
+                                                $txt = 'Имя пустое';
+                                                break;
+
+                                              case 2:
+                                                $txt = "Кол-во символов больше 32";
+                                                break;
+                                            }
+                                            echo
+                                            ' <span class="invalid-feedback" role="alert">
+                                                  <strong>'.$txt.'
+                                                      </strong>
+                                              </span>';
+                                            }
+                                             ?>
+
                                         </div>
                                     </div>
 
@@ -71,7 +88,33 @@
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail адрес</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control" name="email" >
+                                          <input id="email" type="email" class="form-control <?php if ($_SESSION["email_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?>" name="email" >
+                                            <?php
+                                            if ($_SESSION["email_err"] != 0 && $_SESSION["handler_reg"] == 0){
+                                            switch ($_SESSION["email_err"]) {
+                                              case 1:
+                                                $txt = 'Нулевая строка';
+                                                break;
+
+                                              case 2:
+                                                $txt = "Кол-во символов больше 40";
+                                                break;
+
+                                              case 3:
+                                                $txt = "Ошибка идентификации email";
+                                                break;
+
+                                              case 4:
+                                                $txt = "Такая почта уже зарегестрирована";
+                                                break;
+                                            }
+                                            echo
+                                            ' <span class="invalid-feedback" role="alert">
+                                                  <strong>'.$txt.'
+                                                      </strong>
+                                              </span>';
+                                            }
+                                             ?>
                                         </div>
                                     </div>
 
@@ -79,7 +122,27 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control " name="password"  autocomplete="new-password">
+                                            <input id="password" type="password" class="form-control <?php if ($_SESSION["pass_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?> " name="password"  autocomplete="new-password">
+
+                                            <?php
+                                            if ($_SESSION["pass_err"] != 0 && $_SESSION["handler_reg"] == 0){
+                                            switch ($_SESSION["pass_err"]) {
+                                              case 1:
+                                                $txt = 'Пароль пустой';
+                                                break;
+
+                                              case 2:
+                                                $txt = "Кол-во символов больше 32";
+                                                break;
+                                            }
+                                            echo
+                                            ' <span class="invalid-feedback" role="alert">
+                                                  <strong>'.$txt.'
+                                                      </strong>
+                                              </span>';
+                                            }
+                                             ?>
+
                                         </div>
                                     </div>
 
@@ -87,7 +150,22 @@
                                         <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Подтвердите пароль</label>
 
                                         <div class="col-md-6">
-                                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">
+                                            <input id="password-confirm" type="password" class="form-control <?php if ($_SESSION["password_confirm_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?>" name="password_confirmation"  autocomplete="new-password">
+
+                                            <?php
+                                            if ($_SESSION["password_confirm_err"] != 0 && $_SESSION["handler_reg"] == 0){
+                                            switch ($_SESSION["password_confirm_err"]) {
+                                              case 1:
+                                                $txt = 'Пароли не совпадают';
+                                                break;
+                                            }
+                                            echo
+                                            ' <span class="invalid-feedback" role="alert">
+                                                  <strong>'.$txt.'
+                                                      </strong>
+                                              </span>';
+                                            }
+                                             ?>
                                         </div>
                                     </div>
 
@@ -108,3 +186,4 @@
     </div>
 </body>
 </html>
+<?php $_SESSION["handler_reg"] = 1; ?>

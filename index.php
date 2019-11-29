@@ -61,7 +61,20 @@ require_once("db.php");
                                 <div class="alert alert-success" role="alert">
                                   Комментарий успешно добавлен
                                 </div>';
-                              } ?>
+                              }
+                                elseif (($_SESSION["err_name"] != 0 || $_SESSION["err_text"] != 0) && $_SESSION["handler"]==0) {
+                                  echo '
+                                  <div class="alert alert-danger" role="alert">
+                                    Комментарий не был добавлен
+                                  </div>';
+                                }
+                                if (($_SESSION["name_err"] == 0)&&($_SESSION["pass_err"] == 0)&&($_SESSION["email_err"] == 0)&&($_SESSION["password_confirm_err"] == 0)&&($_SESSION["handler_reg"] == 0))
+                                echo
+                                '<div class="alert alert-success" role="alert">
+                                  Успешная регистрация
+                                </div>';
+
+                               ?>
 
 
                                 <?php
@@ -155,4 +168,7 @@ require_once("db.php");
     </div>
 </body>
 </html>
-<?php $_SESSION["handler"]=1; ?>
+<?php
+$_SESSION["handler"] = 1;
+$_SESSION["handler_reg"] = 1;
+ ?>
