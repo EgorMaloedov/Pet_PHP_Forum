@@ -56,19 +56,19 @@ require_once("db.php");
                             <div class="card-header"><h3>Комментарии</h3></div>
 
                             <div class="card-body">
-                              <?php if ($_SESSION["err_name"] == 0 && $_SESSION["err_text"] == 0 && $_SESSION["handler"]==0) {
+                              <?php if ($_SESSION["flash"]["message"] == 1 && $_SESSION["message"]["handler"] == 1) {
                                 echo '
                                 <div class="alert alert-success" role="alert">
                                   Комментарий успешно добавлен
                                 </div>';
                               }
-                                elseif (($_SESSION["err_name"] != 0 || $_SESSION["err_text"] != 0) && $_SESSION["handler"]==0) {
+                                elseif ($_SESSION["flash"]["message"] == 0 && $_SESSION["message"]["handler"] == 1) {
                                   echo '
                                   <div class="alert alert-danger" role="alert">
                                     Комментарий не был добавлен
                                   </div>';
                                 }
-                                if (($_SESSION["name_err"] == 0)&&($_SESSION["pass_err"] == 0)&&($_SESSION["email_err"] == 0)&&($_SESSION["password_confirm_err"] == 0)&&($_SESSION["handler_reg"] == 0))
+                                if ($_SESSION["flash"]["reg"] == 1 && $_SESSION["reg"]["handler"] == 1)
                                 echo
                                 '<div class="alert alert-success" role="alert">
                                   Успешная регистрация
@@ -112,9 +112,9 @@ require_once("db.php");
                                 <form action="handler.php" method="post">
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "name">Имя</label>
-                                    <input name="name" class="form-control <?php if ($_SESSION["err_name"]!=0 && $_SESSION["handler"] == 0): echo "is-invalid";?>" id="exampleFormControlTextarea1" />
+                                    <input name="name" class="form-control <?php if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1): echo "is-invalid";?>" id="exampleFormControlTextarea1" />
                                       <?php
-                                      switch ($_SESSION["err_name"]) {
+                                      switch ($_SESSION["message"]["err"]["name"]) {
                                           case 1:
                                           $txt = "Пожалуй, это имя слишком короткое...";
                                           break;
@@ -134,12 +134,12 @@ require_once("db.php");
 
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "text">Сообщение</label>
-                                    <textarea name="text" class="form-control <?php if ($_SESSION["err_text"]!=0 && $_SESSION["handler"] == 0) echo "is-invalid";?>" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <textarea name="text" class="form-control <?php if ($_SESSION["message"]["err"]["text"]!=0 && $_SESSION["message"]["handler"] == 1) echo "is-invalid";?>" id="exampleFormControlTextarea1" rows="3"></textarea>
 
 
                                     <?php
-                                    if ($_SESSION["err_text"]!=0 && $_SESSION["handler"] == 0){
-                                    switch ($_SESSION["err_text"]) {
+                                    if ($_SESSION["message"]["err"]["text"]!=0 && $_SESSION["handler"] == 1){
+                                    switch ($_SESSION["message"]["err"]["text"]) {
                                         case 1:
                                         $txt = "Неужели, вы не хотите ничего написать...";
                                         break;
@@ -169,6 +169,7 @@ require_once("db.php");
 </body>
 </html>
 <?php
-$_SESSION["handler"] = 1;
-$_SESSION["handler_reg"] = 1;
+$_SESSION["reg"]["handler"] = 0;
+$_SESSION["message"]["handler"] = 0;
+var_dump($_SESSION);
  ?>

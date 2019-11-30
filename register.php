@@ -60,11 +60,11 @@
                                         <label for="name" class="col-md-4 col-form-label text-md-right">Логин</label>
 
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control <?php if ($_SESSION["name_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?>" name="nm" autofocus>
+                                            <input id="name" type="text" class="form-control <?php if ($_SESSION["reg"]["err"]["name"] != 0 && $_SESSION["reg"]["handler"] == 1) echo "is-invalid";?>" name="nm" autofocus>
 
                                             <?php
-                                            if ($_SESSION["name_err"] != 0 && $_SESSION["handler_reg"] == 0){
-                                            switch ($_SESSION["name_err"]) {
+                                            if ($_SESSION["reg"]["err"]["name"] != 0 && $_SESSION["reg"]["handler"] == 1){
+                                            switch ($_SESSION["reg"]["err"]["name"]) {
                                               case 1:
                                                 $txt = 'Имя пустое';
                                                 break;
@@ -88,10 +88,10 @@
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail адрес</label>
 
                                         <div class="col-md-6">
-                                          <input id="email" type="email" class="form-control <?php if ($_SESSION["email_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?>" name="email" >
+                                          <input id="email" type="email" class="form-control <?php if ($_SESSION["reg"]["err"]["email"] != 0 && $_SESSION["reg"]["handler"] == 1) echo "is-invalid";?>" name="email" >
                                             <?php
-                                            if ($_SESSION["email_err"] != 0 && $_SESSION["handler_reg"] == 0){
-                                            switch ($_SESSION["email_err"]) {
+                                            if ($_SESSION["reg"]["err"]["email"] != 0 && $_SESSION["reg"]["handler"] == 1){
+                                            switch ($_SESSION["reg"]["err"]["email"]) {
                                               case 1:
                                                 $txt = 'Нулевая строка';
                                                 break;
@@ -122,11 +122,11 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control <?php if ($_SESSION["pass_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?> " name="password"  autocomplete="new-password">
+                                            <input id="password" type="password" class="form-control <?php if ($_SESSION["reg"]["err"]["pass"] != 0 && $_SESSION["reg"]["handler"] == 1) echo "is-invalid";?> " name="password"  autocomplete="new-password">
 
                                             <?php
-                                            if ($_SESSION["pass_err"] != 0 && $_SESSION["handler_reg"] == 0){
-                                            switch ($_SESSION["pass_err"]) {
+                                            if ($_SESSION["reg"]["err"]["pass"] != 0 && $_SESSION["reg"]["handler"] == 1){
+                                            switch ($_SESSION["reg"]["err"]["pass"]) {
                                               case 1:
                                                 $txt = 'Пароль пустой';
                                                 break;
@@ -150,11 +150,11 @@
                                         <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Подтвердите пароль</label>
 
                                         <div class="col-md-6">
-                                            <input id="password-confirm" type="password" class="form-control <?php if ($_SESSION["password_confirm_err"] != 0 && $_SESSION["handler_reg"] == 0) echo "is-invalid";?>" name="password_confirmation"  autocomplete="new-password">
+                                            <input id="password-confirm" type="password" class="form-control <?php if ($_SESSION["reg"]["err"]["password_confirm"] != 0 && $_SESSION["reg"]["handler"] == 1) echo "is-invalid";?>" name="password_confirmation"  autocomplete="new-password">
 
                                             <?php
-                                            if ($_SESSION["password_confirm_err"] != 0 && $_SESSION["handler_reg"] == 0){
-                                            switch ($_SESSION["password_confirm_err"]) {
+                                            if ($_SESSION["reg"]["err"]["password_confirm"] != 0 && $_SESSION["reg"]["handler"] == 1){
+                                            switch ($_SESSION["reg"]["err"]["password_confirm"]) {
                                               case 1:
                                                 $txt = 'Пароли не совпадают';
                                                 break;
@@ -186,4 +186,5 @@
     </div>
 </body>
 </html>
-<?php $_SESSION["handler_reg"] = 1; ?>
+<?php $_SESSION["reg"]["handler"] = 0;
+var_dump($_SESSION); ?>
