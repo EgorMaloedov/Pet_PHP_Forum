@@ -187,4 +187,4 @@
 </body>
 </html>
 <?php $_SESSION["reg"]["handler"] = 0;
-var_dump($_SESSION); ?>
+ ?>

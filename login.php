@@ -1,3 +1,5 @@
+<?php session_start();
+ ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -52,16 +54,21 @@
                             <div class="card-header">Войти</div>
 
                             <div class="card-body">
-                                <form method="POST" action="">
+                                <form method="POST" action="handler_login.php">
 
                                     <div class="form-group row">
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail адрес</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control is-invalid " name="email"  autocomplete="email" autofocus >
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>Ошибка валидации</strong>
-                                                </span>
+                                            <input id="email" type="email" class="form-control <?php if ($_SESSION["login"]["handler"] == 1 && $_SESSION["login"]["err"]["email"] == 1) echo'is-invalid'; ?> " name="email"  autocomplete="email" autofocus >
+                                            <?php if ($_SESSION["login"]["handler"] == 1 && $_SESSION["login"]["err"]["email"] == 1)
+
+                                          echo
+                                          ' <span class="invalid-feedback" role="alert">
+                                                    <strong>Логин или пароль неправильный </strong>
+                                          </span>';
+                                              ?>
+
                                         </div>
                                     </div>
 
@@ -69,14 +76,23 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control" name="password"  autocomplete="current-password">
+                                            <input id="password" type="password" class="form-control <?php if ($_SESSION["login"]["handler"] == 1 && $_SESSION["login"]["err"]["pass"] == 1) echo'is-invalid'; ?>" name="password"  autocomplete="current-password">
+
+                                            <?php if ($_SESSION["login"]["handler"] == 1 && $_SESSION["login"]["err"]["pass"] == 1)
+
+                                          echo
+                                          ' <span class="invalid-feedback" role="alert">
+                                                    <strong>Логин или пароль неправильный </strong>
+                                          </span>';
+                                              ?>
+
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-6 offset-md-4">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" >
+                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" value="remember">
 
                                                 <label class="form-check-label" for="remember">
                                                     Запомнить меня
@@ -88,7 +104,7 @@
                                     <div class="form-group row mb-0">
                                         <div class="col-md-8 offset-md-4">
                                             <button type="submit" class="btn btn-primary">
-                                               Логин
+                                               Войти
                                             </button>
                                         </div>
                                     </div>
@@ -102,3 +118,6 @@
     </div>
 </body>
 </html>
+<?php
+$_SESSION["login"]["handler"] = 0;
+ ?>

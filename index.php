@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once("db.php");
+if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
+  $_SESSION["user"]["email"] = $_COOKIE["email_cookie"] ;
+  $_SESSION["user"]["name"] = $_COOKIE["name_cookie"] ;
+  $_SESSION["user"]["success"] = 1;
+}
  ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -37,18 +42,48 @@ require_once("db.php");
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.php">Войти</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="register.php">Зарегестрироваться</a>
-                            </li>
+<?php if($_SESSION["user"]["success"] == 0) echo '   <li class="nav-item">
+          <a class="nav-link" href="login.php">Войти</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="register.php">Зарегестрироваться</a>
+      </li>
+  ';
+    else {
+      echo ' <li class="nav-item">
+                <a class="nav-link" href="profile.php"><i>'.$_SESSION["user"]["name"].'</i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="exit.php">Выйти</a>
+            </li> ';
+    }
+  ?>
+
+
+
+
+
                     </ul>
                 </div>
             </div>
         </nav>
 
         <main class="py-4">
+          <?php
+          if ($_SESSION["flash"]["reg"] == 1 && $_SESSION["reg"]["handler"] == 1)
+          echo
+          '<div class="alert alert-success" style="text-align:center;"role="alert">
+            Успешная регистрация
+          </div>';
+
+          if ($_SESSION["flash"]["login"] == 1 && $_SESSION["login"]["handler"] == 1){
+            $log = $_SESSION["user"]["name"];
+          echo
+          '<div class="alert alert-success" style="text-align:center;"role="alert">
+            Добро пожаловать <i>'.$log.'
+          </i></div>';
+        }
+           ?>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
@@ -68,11 +103,6 @@ require_once("db.php");
                                     Комментарий не был добавлен
                                   </div>';
                                 }
-                                if ($_SESSION["flash"]["reg"] == 1 && $_SESSION["reg"]["handler"] == 1)
-                                echo
-                                '<div class="alert alert-success" role="alert">
-                                  Успешная регистрация
-                                </div>';
 
                                ?>
 
@@ -103,17 +133,18 @@ require_once("db.php");
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-12" style="margin-top: 20px;">
                         <div class="card">
                             <div class="card-header"><h3>Оставить комментарий</h3></div>
 
                             <div class="card-body">
                                 <form action="handler.php" method="post">
+<?php if($_SESSION["user"]["success"] == 0): ?>
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "name">Имя</label>
-                                    <input name="name" class="form-control <?php if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1): echo "is-invalid";?>" id="exampleFormControlTextarea1" />
+                                    <input name="name" class="form-control <?php if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1) echo "is-invalid";?>" id="exampleFormControlTextarea1" />
                                       <?php
+                                      if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1){
                                       switch ($_SESSION["message"]["err"]["name"]) {
                                           case 1:
                                           $txt = "Пожалуй, это имя слишком короткое...";
@@ -126,19 +157,18 @@ require_once("db.php");
                                       ' <span class="invalid-feedback" role="alert">
                                             <strong>'.$txt.'
                                                 </strong>
-                                        </span>';
+                                        </span>';}
 
-                                      endif;
                                        ?>
                                   </div>
-
+  <?php endif; ?>
                                   <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "text">Сообщение</label>
                                     <textarea name="text" class="form-control <?php if ($_SESSION["message"]["err"]["text"]!=0 && $_SESSION["message"]["handler"] == 1) echo "is-invalid";?>" id="exampleFormControlTextarea1" rows="3"></textarea>
 
 
                                     <?php
-                                    if ($_SESSION["message"]["err"]["text"]!=0 && $_SESSION["handler"] == 1){
+                                    if ($_SESSION["message"]["err"]["text"]!=0 && $_SESSION["message"]["handler"] == 1){
                                     switch ($_SESSION["message"]["err"]["text"]) {
                                         case 1:
                                         $txt = "Неужели, вы не хотите ничего написать...";
@@ -162,14 +192,19 @@ require_once("db.php");
                             </div>
                         </div>
                     </div>
-                </div>
+                                  </div>
             </div>
         </main>
     </div>
 </body>
 </html>
 <?php
+$_SESSION["flash"]["err_log"] = 0;
+$_SESSION["flash"]["message"] = 0;
+$_SESSION["flash"]["login"] = 0;
+$_SESSION["flash"]["reg"] = 0;
+$_SESSION["login"]["handler"] = 0;
 $_SESSION["reg"]["handler"] = 0;
 $_SESSION["message"]["handler"] = 0;
-var_dump($_SESSION);
+
  ?>

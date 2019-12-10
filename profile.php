@@ -1,3 +1,6 @@
+<?php
+session_start();
+if ($_SESSION["user"]["success"] == 1): ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -34,10 +37,10 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link" href="login.php">Войти</a>
+                                <a class="nav-link" href="exit.php"><?php echo $_SESSION["user"]["name"]; ?></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="register.php">Зарегестрироваться</a>
+                                <a class="nav-link" href="exit.php">Выйти</a>
                             </li>
                     </ul>
                 </div>
@@ -131,3 +134,9 @@
     </div>
 </body>
 </html>
+<?php
+endif;
+if ($_SESSION["user"]["success"] == 0){
+  header("Location: ../index.php");
+}
+ ?>
