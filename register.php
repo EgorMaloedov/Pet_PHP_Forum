@@ -72,6 +72,10 @@
                                               case 2:
                                                 $txt = "Кол-во символов больше 32";
                                                 break;
+
+                                              case 3:
+                                                $txt = "Имя занято";
+                                                break;
                                             }
                                             echo
                                             ' <span class="invalid-feedback" role="alert">

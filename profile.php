@@ -1,6 +1,7 @@
 <?php
 session_start();
-if ($_SESSION["user"]["success"] == 1): ?>
+if ($_SESSION["user"]["success"] == 1):
+  ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -37,7 +38,7 @@ if ($_SESSION["user"]["success"] == 1): ?>
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                             <li class="nav-item">
-                                <a class="nav-link" href="exit.php"><?php echo $_SESSION["user"]["name"]; ?></a>
+                                <a class="nav-link" href="profile.php"><i><?php echo $_SESSION["user"]["name"]; ?></i></a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="exit.php">Выйти</a>
@@ -55,34 +56,94 @@ if ($_SESSION["user"]["success"] == 1): ?>
                         <div class="card-header"><h3>Профиль пользователя</h3></div>
 
                         <div class="card-body">
-                          <div class="alert alert-success" role="alert">
-                            Профиль успешно обновлен
-                          </div>
 
-                            <form action="" method="post" enctype="multipart/form-data">
+                          <?php
+
+                           if ($_SESSION["flash"]["profile"] == 1 && $_SESSION["profile"]["handler"] == 1)
+                          echo '<div class="alert alert-success" role="alert">
+                            Профиль успешно обновлен
+                          </div>';
+                          elseif ($_SESSION["flash"]["profile"] == 0 && $_SESSION["profile"]["handler"] == 1) {
+                            echo '<div class="alert alert-danger" role="alert">
+                              Профиль не был обновлен
+                            </div>';
+                          }
+
+                          ?>
+
+                            <form action="handler_profile.php" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Имя</label>
-                                            <input type="text" class="form-control" name="name" id="exampleFormControlInput1" value="John">
-
+                                            <input type="text" class="form-control <?php if ($_SESSION["profile"]["err"]["name"] != 0 && $_SESSION["profile"]["handler"] != 0) echo"is-invalid"; ?>" name="name" id="exampleFormControlInput1" value="<?php echo $_SESSION["user"]["name"]; ?>">
+                                            <?php
+                                            if ($_SESSION["profile"]["err"]["name"] != 0 && $_SESSION["profile"]["handler"] != 0)
+                                            {
+                                              switch ($_SESSION["profile"]["err"]["name"]) {
+                                                case 1:
+                                                  $text = "Имя пустое";
+                                                break;
+                                                case 2:
+                                                  $text = "Переполнение строки (32)";
+                                                break;
+                                                case 3:
+                                                  $text = "Имя занято";
+                                                break;
+                                              }
+                                            echo'<span class="text text-danger">
+                                                '.$text.'
+                                            </span>';
+                                            }
+                                            ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Email</label>
-                                            <input type="email" class="form-control is-invalid" name="email" id="exampleFormControlInput1" value="john@example.com">
-                                            <span class="text text-danger">
-                                                Ошибка валидации
-                                            </span>
+                                            <input type="email" class="form-control <?php if ($_SESSION["profile"]["err"]["email"] != 0 && $_SESSION["profile"]["handler"] != 0) echo"is-invalid"; ?>" name="email" id="exampleFormControlInput1" value="<?php echo $_SESSION["user"]["email"]; ?>">
+                                            <?php
+                                            if ($_SESSION["profile"]["err"]["email"] != 0 && $_SESSION["profile"]["handler"] != 0)
+                                            {
+                                              switch ($_SESSION["profile"]["err"]["email"]) {
+                                                case 1:
+                                                  $text = "Email пустой";
+                                                break;
+                                                case 2:
+                                                  $text = "Переполнение строки (40)";
+                                                break;
+                                                case 3:
+                                                  $text = "Такой Email зарегестрирован";
+                                                break;
+                                                case 4:
+                                                  $text = "Email не соответствует стандарту";
+                                                  break;
+                                              }
+                                            echo'<span class="text text-danger">
+                                                '.$text.'
+                                            </span>';
+                                            }
+                                            ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Аватар</label>
-                                            <input type="file" class="form-control" name="image" id="exampleFormControlInput1">
+                                            <input type="file" class="form-control <?php if($_SESSION["profile"]["err"]["image"] != 0) echo "is-invalid"; ?>" name="image" id="exampleFormControlInput1">
+                                            <?php
+                                              if($_SESSION["profile"]["err"]["image"] != 0)
+                                              {
+                                                switch($_SESSION["profile"]["err"]["image"]){
+                                                  case 1:
+                                                  $text = "Файл не выбран";
+                                                }
+                                                echo'<span class="text text-danger">
+                                                    '.$text.'
+                                                </span>';
+                                              }
+                                             ?>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <img src="img/no-user.jpg" alt="" class="img-fluid">
+                                        <img src="<?php echo $_SESSION["user"]["image"] ?>" alt="Авотарочка" class="img-fluid">
                                     </div>
 
                                     <div class="col-md-12">
@@ -99,26 +160,91 @@ if ($_SESSION["user"]["success"] == 1): ?>
                         <div class="card-header"><h3>Безопасность</h3></div>
 
                         <div class="card-body">
-                            <div class="alert alert-success" role="alert">
-                                Пароль успешно обновлен
-                            </div>
 
-                            <form action="/profile/password" method="post">
+
+                            <?php
+                            if ($_SESSION["flash"]["security"] == 1 && $_SESSION["security"]["handler"] == 1)
+                           echo '<div class="alert alert-success" role="alert">
+                             Пароль успешно обновлен
+                           </div>';
+                           elseif ($_SESSION["flash"]["security"] == 0 && $_SESSION["security"]["handler"] == 1) {
+                             echo '<div class="alert alert-danger" role="alert">
+                               Пароль не был обновлен
+                             </div>';
+                           }
+                             ?>
+
+                            <form action="handler_security.php" method="post">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Текущий пароль</label>
-                                            <input type="password" name="current" class="form-control" id="exampleFormControlInput1">
+                                            <input type="password" name="current" class="form-control <?php if ($_SESSION["profile"]["err"]["pass_current"] != 0 && $_SESSION["security"]["handler"] != 0) echo"is-invalid"; ?>" id="exampleFormControlInput1">
+                                                <?php if ($_SESSION["profile"]["err"]["pass_current"] != 0 && $_SESSION["security"]["handler"] != 0){
+
+                                                      switch($_SESSION["profile"]["err"]["pass_current"]){
+                                                          case 1:
+                                                            $text = "Пароль пустой";
+                                                          break;
+                                                          case 2:
+                                                            $text = "Переполнение строки (32)";
+                                                          break;
+                                                          case 3:
+                                                            $text = "Пароль неправильный";
+                                                          break;
+                                                      }
+                                                      echo'<span class="text text-danger">
+                                                          '.$text.'
+                                                      </span>';
+                                                      }
+
+                                                 ?>
+
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Новый пароль</label>
-                                            <input type="password" name="password" class="form-control" id="exampleFormControlInput1">
+                                            <input type="password" name="password" class="form-control <?php if ($_SESSION["profile"]["err"]["new_pass"] != 0 && $_SESSION["security"]["handler"] != 0) echo"is-invalid"; ?>" id="exampleFormControlInput1">
+                                            <?php if ($_SESSION["profile"]["err"]["new_pass"] != 0 && $_SESSION["security"]["handler"] != 0){
+
+                                                  switch($_SESSION["profile"]["err"]["new_pass"]){
+                                                      case 1:
+                                                        $text = "Пароль пустой";
+                                                      break;
+                                                      case 2:
+                                                        $text = "Переполнение строки (32)";
+                                                      break;
+                                                  }
+                                                  echo'<span class="text text-danger">
+                                                      '.$text.'
+                                                  </span>';
+                                                  }
+
+                                             ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Подтверждение пароля</label>
-                                            <input type="password" name="password_confirmation" class="form-control" id="exampleFormControlInput1">
+                                            <input type="password" name="password_confirmation" class="form-control <?php if ($_SESSION["profile"]["err"]["pass_confirm"] != 0 && $_SESSION["security"]["handler"] != 0) echo"is-invalid"; ?>" id="exampleFormControlInput1">
+                                            <?php if ($_SESSION["profile"]["err"]["pass_confirm"] != 0 && $_SESSION["security"]["handler"] != 0){
+
+                                                  switch($_SESSION["profile"]["err"]["pass_confirm"]){
+                                                      case 1:
+                                                        $text = "Пароль пустой";
+                                                      break;
+                                                      case 2:
+                                                        $text = "Переполнение строки (32)";
+                                                      break;
+                                                      case 3:
+                                                        $text = "Пароли не совпадают";
+                                                      break;
+                                                  }
+                                                  echo'<span class="text text-danger">
+                                                      '.$text.'
+                                                  </span>';
+                                                  }
+
+                                             ?>
                                         </div>
 
                                         <button class="btn btn-success">Подтвердить</button>
@@ -139,4 +265,8 @@ endif;
 if ($_SESSION["user"]["success"] == 0){
   header("Location: ../index.php");
 }
+$_SESSION["flash"]["security"] = 0;
+$_SESSION["flash"]["profile"] = 0;
+$_SESSION["profile"]["handler"] = 0;
+$_SESSION["security"]["handler"] = 0;
  ?>

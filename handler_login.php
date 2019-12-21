@@ -11,18 +11,20 @@ $_SESSION["login"]["handler"] = 1;
 if ($em != NULL)
 {
     if (password_verify($password,$em[0]["pass"])){
-    $sql = "SELECT email, pass,name FROM users WHERE email = ".$email."";
+    $sql = "SELECT email, pass,name,img  FROM users WHERE email = ".$email."";
     $stmt  = $pdo -> prepare($sql);
     $stmt -> execute();
     $mails = $stmt -> fetchAll(PDO::FETCH_ASSOC);
     $_SESSION["user"]["email"] = $mails[0]["email"];
     $_SESSION["user"]["pass"] = $mails[0]["pass"];
     $_SESSION["user"]["name"] = $mails[0]["name"];
+    $_SESSION["user"]["image"] = $mails[0]["img"];
     $_SESSION["flash"]["login"] = 1;
     $_SESSION["user"]["success"] = 1;
     if ($_POST["remember"] == "remember") {
       setcookie("email_cookie",$_SESSION["user"]["email"]);
       setcookie("name_cookie",$_SESSION["user"]["name"]);
+      setcookie("image_cookie",$_SESSION["user"]["image"]);
     }
     header("Location: ../index.php");
     }
