@@ -127,9 +127,9 @@ if ($_SESSION["user"]["success"] == 1):
 
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Аватар</label>
-                                            <input type="file" class="form-control <?php if($_SESSION["profile"]["err"]["image"] != 0) echo "is-invalid"; ?>" name="image" id="exampleFormControlInput1">
+                                            <input type="file" class="form-control <?php if($_SESSION["profile"]["err"]["image"] != 0 && $_SESSION["profile"]["handler"] != 0) echo "is-invalid"; ?>" name="image" id="exampleFormControlInput1">
                                             <?php
-                                              if($_SESSION["profile"]["err"]["image"] != 0)
+                                              if($_SESSION["profile"]["err"]["image"] != 0 && $_SESSION["profile"]["handler"] != 0)
                                               {
                                                 switch($_SESSION["profile"]["err"]["image"]){
                                                   case 1:

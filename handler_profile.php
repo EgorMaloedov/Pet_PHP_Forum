@@ -12,6 +12,7 @@ $stmt = $pdo -> prepare($sql);
 $stmt -> execute();
 $data = $stmt -> FetchAll(PDO::FETCH_ASSOC);
 
+$_SESSION["profile"]["err"]["image"] = 0;
 $_SESSION["profile"]["err"]["email"] = 0;
 $_SESSION["profile"]["handler"] = 1;
 
@@ -53,6 +54,9 @@ if ($_SESSION["profile"]["err"]["name"] == 0 || $_SESSION["profile"]["err"]["ema
 }
   if($_SESSION["profile"]["err"]["email"] == 0){
   $sql = "UPDATE users SET email = :email WHERE email = ".$email_log."";
+  $stmt = $pdo -> prepare($sql);
+  $stmt -> execute([":email"=>$email]);
+  $sql = "UPDATE comments SET mail = :email WHERE mail = ".$email_log."";
   $stmt = $pdo -> prepare($sql);
   $stmt -> execute([":email"=>$email]);
   $_SESSION["user"]["email"] = $email;

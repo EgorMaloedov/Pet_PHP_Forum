@@ -11,9 +11,12 @@ $month = date("m");
 $year = date("Y");
 $date = $day."/".$month."/".$year;
 if (mb_strlen($name)<32 && mb_strlen($text)<255 && mb_strlen($name)!=0 && mb_strlen($text)!=0){
-$sql = "INSERT INTO comments (name,text,date) VALUES (:name,:text,:date)";
+$sql = "INSERT INTO comments (name,text,date,img,mail) VALUES (:name,:text,:date,:img,:mail)";
 $stmt=$pdo->prepare($sql);
-$stmt->execute([":name"=>$name,":text"=>$text,":date"=>$date]);
+if ($_SESSION["user"]["success"] == 1)
+$stmt->execute([":name"=>$name,":text"=>$text,":date"=>$date,":img"=>$_SESSION["user"]["image"],":mail"=>$_SESSION["user"]["email"]]);
+else
+$stmt->execute([":name"=>$name,":text"=>$text,":date"=>$date,":img"=>"no-user.jpg",":mail"=>"NULL"]);
 $_SESSION["message"]["err"]["name"] = 0;
 $_SESSION["message"]["err"]["text"] = 0;
 $_SESSION["flash"]["message"] = 1;

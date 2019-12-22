@@ -4,6 +4,7 @@ require_once("db.php");
 if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
   $_SESSION["user"]["email"] = $_COOKIE["email_cookie"] ;
   $_SESSION["user"]["name"] = $_COOKIE["name_cookie"] ;
+  $_SESSION["user"]["image"] = $_COOKIE["image_cookie"];
   $_SESSION["user"]["success"] = 1;
 }
  ?>
@@ -113,10 +114,21 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
                               $comments = array_reverse($stmt -> fetchAll(PDO::FETCH_ASSOC));
 
                                     foreach ($comments as $comment):
+                                      if ($comment["mail"] == "NULL")
+                                        $comment["img"] = "no-user.jpg";
+                                        else {
+                                          $email_log = "'".$comment["mail"]."'";
+                                          $sql = "SELECT name,img FROM users WHERE email = ".$email_log."";
+                                          $stmt = $pdo->prepare($sql);
+                                          $stmt -> execute();
+                                          $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                          $comment["name"] = $user[0]["name"];
+                                          $comment["img"] = $user[0]["img"];
+                                        }
                                       ?>
 
                                   <div class="media">
-                                            <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
+                                      <img src="<?php echo $comment["img"]; ?>" class="mr-3" alt="..." width="64" height="64">
                                               <div class="media-body">
                                                 <h5 class="mt-0"><?php echo $comment["name"]; ?></h5>
                                                 <span><small><?php echo $comment["date"]; ?></small></span>
