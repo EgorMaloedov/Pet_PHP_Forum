@@ -43,14 +43,17 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-<?php if($_SESSION["user"]["success"] == 0) echo '   <li class="nav-item">
-          <a class="nav-link" href="login.php">Войти</a>
+<?php if($_SESSION["admin"]["success"] == 1) echo '   <li class="nav-item">
+          <a class="nav-link" href="profile.php"><i>'.$_SESSION["user"]["name"].'</i></a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" href="register.php">Зарегестрироваться</a>
+          <a class="nav-link" href="exit.php">Выйти</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="admin.php">Админка</a>
       </li>
   ';
-    else {
+    elseif($_SESSION["user"]["success"] == 1) {
       echo ' <li class="nav-item">
                 <a class="nav-link" href="profile.php"><i>'.$_SESSION["user"]["name"].'</i></a>
             </li>
@@ -58,13 +61,16 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
                 <a class="nav-link" href="exit.php">Выйти</a>
             </li> ';
     }
+    else echo '<li class="nav-item">
+              <a class="nav-link" href="login.php">Войти</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="register.php">Зарегестрироваться</a>
+          </li>
+      ';
+
   ?>
-
-
-
-
-
-                    </ul>
+                  </ul>
                 </div>
             </div>
         </nav>
@@ -151,7 +157,7 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
 
                             <div class="card-body">
                                 <form action="handler.php" method="post">
-                                      <?php if($_SESSION["user"]["success"] == 0): ?>
+                                      <?php if($_SESSION["user"]["success"] == 0 && $_SESSION["admin"]["success"] == 0): ?>
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "name">Имя</label>
                                     <input name="name" class="form-control <?php if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1) echo "is-invalid";?>" id="exampleFormControlTextarea1" />

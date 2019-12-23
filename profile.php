@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION["user"]["success"] == 1):
+if ($_SESSION["user"]["success"] == 1 || $_SESSION["admin"]["success"] == 1):
   ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -37,12 +37,33 @@ if ($_SESSION["user"]["success"] == 1):
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="profile.php"><i><?php echo $_SESSION["user"]["name"]; ?></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="exit.php">Выйти</a>
-                            </li>
+                        <?php if($_SESSION["admin"]["success"] == 1) echo '   <li class="nav-item">
+                                  <a class="nav-link" href="profile.php"><i>'.$_SESSION["user"]["name"].'</i></a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="exit.php">Выйти</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="admin.php">Админка</a>
+                              </li>
+                          ';
+                            elseif($_SESSION["user"]["success"] == 1) {
+                              echo ' <li class="nav-item">
+                                        <a class="nav-link" href="profile.php"><i>'.$_SESSION["user"]["name"].'</i></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="exit.php">Выйти</a>
+                                    </li> ';
+                            }
+                            else echo '<li class="nav-item">
+                                      <a class="nav-link" href="login.php">Войти</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="register.php">Зарегестрироваться</a>
+                                  </li>
+                              ';
+
+                          ?>
                     </ul>
                 </div>
             </div>
@@ -262,7 +283,7 @@ if ($_SESSION["user"]["success"] == 1):
 </html>
 <?php
 endif;
-if ($_SESSION["user"]["success"] == 0){
+if ($_SESSION["user"]["success"] == 0 && $_SESSION["admin"]["success"] == 0){
   header("Location: ../index.php");
 }
 $_SESSION["flash"]["security"] = 0;

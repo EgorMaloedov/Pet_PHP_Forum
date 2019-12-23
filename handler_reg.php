@@ -51,13 +51,13 @@ $_SESSION["reg"]["handler"] = 1;
 
 
 if (($_SESSION["reg"]["err"]["password_confirm"] == 0) && ($_SESSION["reg"]["err"]["name"] == 0) && ($_SESSION["reg"]["err"]["pass"] == 0) && ($_SESSION["reg"]["err"]["email"] == 0)){
-$sql = "INSERT INTO users (email,name,pass,img) VALUES (:email,:name,:pass,'no-user.jpg')" ;
+$sql = "INSERT INTO users (email,name,pass,img,status) VALUES (:email,:name,:pass,'no-user.jpg','user')" ;
 $stmt = $pdo -> prepare($sql);
 $stmt -> execute([":email"=>$email,":name"=>$name,":pass"=>$password]);
 $_SESSION["user"]["success"] = 1;
 $_SESSION["user"]["name"] = $name;
 $_SESSION["user"]["email"] = $email;
-$_SESSION["user"]['image'] = "no-user.jpg"; 
+$_SESSION["user"]['image'] = "no-user.jpg";
 $_SESSION["flash"]["reg"] = 1;
 header("Location: ../index.php");
 }

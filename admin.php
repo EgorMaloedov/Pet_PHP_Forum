@@ -1,5 +1,9 @@
 <?php
 session_start();
+if($_SESSION["admin"]["success"] == 1):
+ ?>
+<?php
+session_start();
 require_once("db.php");
  ?>
 <!DOCTYPE html>
@@ -37,12 +41,17 @@ require_once("db.php");
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.html">Войти</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="register.html">Зарегестрироваться</a>
-                            </li>
+                        <?php echo '   <li class="nav-item">
+                                  <a class="nav-link" href="profile.php"><i>'.$_SESSION["user"]["name"].'</i></a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="exit.php">Выйти</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="admin.php">Админка</a>
+                              </li>
+                          ';
+                          ?>
                     </ul>
                 </div>
             </div>
@@ -113,3 +122,9 @@ require_once("db.php");
     </div>
 </body>
 </html>
+
+<?php
+endif;
+if($_SESSION["admin"]["success"] != 1)
+header("Location: ../index.php");
+ ?>

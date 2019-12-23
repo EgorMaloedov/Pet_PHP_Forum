@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "db.php";
-if ($_SESSION["user"]["success"] == 1)
+if ($_SESSION["user"]["success"] == 1 || $_SESSION["admin"]["success"] == 1)
 $name = $_SESSION["user"]["name"];
 else
 $name = $_POST['name'];
@@ -11,9 +11,9 @@ $month = date("m");
 $year = date("Y");
 $date = $day."/".$month."/".$year;
 if (mb_strlen($name)<32 && mb_strlen($text)<255 && mb_strlen($name)!=0 && mb_strlen($text)!=0){
-$sql = "INSERT INTO comments (name,text,date,img,mail) VALUES (:name,:text,:date,:img,:mail)";
+$sql = "INSERT INTO comments (name,text,date,img,mail,status) VALUES (:name,:text,:date,:img,:mail,1)";
 $stmt=$pdo->prepare($sql);
-if ($_SESSION["user"]["success"] == 1)
+if ($_SESSION["user"]["success"] == 1 || $_SESSION["admin"]["success"] == 1)
 $stmt->execute([":name"=>$name,":text"=>$text,":date"=>$date,":img"=>$_SESSION["user"]["image"],":mail"=>$_SESSION["user"]["email"]]);
 else
 $stmt->execute([":name"=>$name,":text"=>$text,":date"=>$date,":img"=>"no-user.jpg",":mail"=>"NULL"]);
