@@ -128,12 +128,12 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
                                       ?>
 
                                   <div class="media">
-                                      <img src="<?php echo $comment["img"]; ?>" class="mr-3" alt="..." width="64" height="64">
+                                      <?php  if($comment["status"] == 1): ?><img src="<?php echo $comment["img"]; ?>" class="mr-3" alt="..." width="64" height="64"> <?php endif; ?>
                                               <div class="media-body">
-                                                <h5 class="mt-0"><?php echo $comment["name"]; ?></h5>
-                                                <span><small><?php echo $comment["date"]; ?></small></span>
+                                                <h5 class="mt-0"><?php if($comment["status"] == 1) echo $comment["name"]; ?></h5>
+                                                <span><small><?php if($comment["status"] == 1) echo $comment["date"]; ?></small></span>
                                                 <p>
-                                                   <?php echo $comment["text"];?>
+                                                   <?php if($comment["status"] == 1) echo $comment["text"];?>
                                                 </p>
 
                                               </div>
@@ -151,7 +151,7 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
 
                             <div class="card-body">
                                 <form action="handler.php" method="post">
-<?php if($_SESSION["user"]["success"] == 0): ?>
+                                      <?php if($_SESSION["user"]["success"] == 0): ?>
                                     <div class="form-group">
                                     <label for="exampleFormControlTextarea1" name = "name">Имя</label>
                                     <input name="name" class="form-control <?php if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1) echo "is-invalid";?>" id="exampleFormControlTextarea1" />
@@ -159,10 +159,10 @@ if ($_COOKIE["email_cookie"] != 0 && $_COOKIE["name_cookie"] != 0) {
                                       if ($_SESSION["message"]["err"]["name"]!=0 && $_SESSION["message"]["handler"] == 1){
                                       switch ($_SESSION["message"]["err"]["name"]) {
                                           case 1:
-                                          $txt = "Пожалуй, это имя слишком короткое...";
+                                          $txt = "Мне кажется, что это имя слишком короткое...";
                                           break;
                                           case 2:
-                                          $txt = "Оно слишком длинное(32)";
+                                          $txt = "Имя слишком длинное(32)";
                                           break;
                                         }
                                       echo

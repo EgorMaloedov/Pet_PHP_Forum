@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once("db.php");
+ ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -62,24 +66,43 @@
                                             <th>Действия</th>
                                         </tr>
                                     </thead>
+                                    <?php
+                                    $sql  = "SELECT * FROM comments";
+                                    $stmt = $pdo -> query($sql);
+                                  $comments = array_reverse($stmt -> fetchAll(PDO::FETCH_ASSOC));
+
+                                        foreach ($comments as $comment):
+                                          if ($comment["mail"] == "NULL")
+                                            $comment["img"] = "no-user.jpg";
+                                            else {
+                                              $email_log = "'".$comment["mail"]."'";
+                                              $sql = "SELECT name,img FROM users WHERE email = ".$email_log."";
+                                              $stmt = $pdo->prepare($sql);
+                                              $stmt -> execute();
+                                              $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                              $comment["name"] = $user[0]["name"];
+                                              $comment["img"] = $user[0]["img"];
+                                            }
+                                          ?>
 
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <img src="img/no-user.jpg" alt="" class="img-fluid" width="64" height="64">
+                                                <img src="<?php echo $comment["img"]; ?>" alt="Аватарка" class="img-fluid" width="64" height="64">
                                             </td>
-                                            <td>John</td>
-                                            <td>12/08/2045</td>
-                                            <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta aut quam cumque libero reiciendis, dolor.</td>
+                                            <td><?php echo $comment["name"]; ?></td>
+                                            <td><?php echo $comment["date"]; ?></td>
+                                            <td><?php echo $comment["text"]; ?></td>
                                             <td>
-                                                    <a href="" class="btn btn-success">Разрешить</a>
+                                                    <?php if($comment["status"]==0): ?><a href="admin_handler.php?id=<?php $id = $comment["id"]; echo $id;?>&action=accept" class="btn btn-success" >Разрешить</a><?php endif; ?>
 
-                                                    <a href="" class="btn btn-warning">Запретить</a>
+                                                    <?php if($comment["status"]==1): ?><a href="admin_handler.php?id=<?php $id = $comment["id"]; echo $id;?>&action=ban" class="btn btn-warning">Запретить</a><?php endif; ?>
 
-                                                <a href="" onclick="return confirm('are you sure?')" class="btn btn-danger">Удалить</a>
+                                                <a href="admin_handler.php?id=<?php $id = $comment["id"]; echo $id;?>&action=delete" onclick="return confirm('are you sure?')" class="btn btn-danger">Удалить</a>
                                             </td>
                                         </tr>
                                     </tbody>
+                                      <?php endforeach; ?>
                                 </table>
                             </div>
                         </div>
